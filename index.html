@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>garrysmods.org - THE SCREAMING</title>
+    <style>
+        body {
+            background-color: #050000;
+            color: #d3d3d3;
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        #container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #110505;
+            padding: 20px;
+            border: 1px solid #330000;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.1);
+        }
+
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .logo-nav {
+            display: flex;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background-color: #220000;
+            border: 2px solid #550000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            font-weight: bold;
+            color: #ff0000;
+            text-shadow: 0 0 10px #ff0000;
+        }
+
+        .nav-links a {
+            display: block;
+            color: #ff3333;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+            color: #ff6666;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #888;
+        }
+
+        .search-box input {
+            background-color: #220000;
+            border: 1px solid #550000;
+            color: #ff0000;
+            padding: 3px 5px;
+        }
+
+        /* Tag Cloud */
+        .tag-cloud {
+            text-align: center;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #330000;
+        }
+
+        .tag-cloud span {
+            margin: 0 5px;
+        }
+        
+        .tag-large { font-size: 24px; font-weight: bold; color: #ff0000; }
+        .tag-medium { font-size: 18px; font-weight: bold; color: #cc0000; }
+        .tag-small { font-size: 14px; color: #880000; }
+        .tag-tiny { font-size: 12px; color: #550000; }
+
+        /* Grid Layout for Home */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .mod-card {
+            background-color: #0a0000;
+            border-top: 3px solid #660000;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .mod-card:hover {
+            background-color: #1a0000;
+            transform: scale(1.02);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 5px 10px 0;
+        }
+
+        .card-header h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #fff;
+        }
+
+        .author {
+            font-size: 12px;
+            color: #ff0000;
+            font-weight: bold;
+        }
+
+        .meta {
+            font-size: 11px;
+            color: #228b22;
+            padding: 0 10px 5px;
+        }
+
+        .mod-card img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            display: block;
+            border-bottom: 1px solid #330000;
+            opacity: 0.7;
+            filter: grayscale(80%) sepia(50%) hue-rotate(-50deg);
+        }
+
+        .no-image-box {
+            width: 100%;
+            height: 120px;
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #440000;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 20px;
+            font-weight: bold;
+            border-bottom: 1px solid #330000;
+        }
+
+        /* Detail Page Styles */
+        #detail-page {
+            display: none;
+            background-color: #0a0000;
+            padding: 20px;
+            border: 1px solid #330000;
+        }
+
+        .page-content {
+            display: none;
+        }
+
+        #detail-page h1 {
+            color: #ff0000;
+            border-bottom: 1px solid #550000;
+            padding-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .main-image {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border: 2px solid #550000;
+            margin-bottom: 20px;
+            filter: contrast(150%) brightness(70%);
+        }
+
+        .wiki-section {
+            margin-bottom: 20px;
+        }
+
+        .wiki-section h2 {
+            color: #aa0000;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .wiki-section p {
+            color: #cccccc;
+            line-height: 1.5;
+            margin: 0;
+            background: #110505;
+            padding: 10px;
+            border-left: 3px solid #ff0000;
+        }
+
+        /* Redacted Text Style */
+        .redacted {
+            background-color: #000;
+            color: #000;
+            user-select: none;
+            padding: 0 4px;
+        }
+        
+        .redacted::selection {
+            background-color: #000;
+            color: #000;
+        }
+
+        .back-btn {
+            background-color: #330000;
+            color: #fff;
+            border: 1px solid #ff0000;
+            padding: 5px 15px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            font-family: inherit;
+        }
+
+        .back-btn:hover {
+            background-color: #550000;
+        }
+
+        /* Error Page Styles */
+        #error-page {
+            display: none;
+            text-align: center;
+            padding: 100px 20px;
+            background-color: #050000;
+            border: 1px solid #ff0000;
+        }
+
+        #error-page h1 {
+            color: #ff0000;
+            font-family: 'Courier New', Courier, monospace;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 24px;
+        }
+
+        #error-page h2 {
+            color: #550000;
+            font-family: 'Courier New', Courier, monospace;
+            margin-bottom: 40px;
+        }
+
+    </style>
+</head>
+<body>
+
+<audio id="creepy-music" loop>
+    <source src="oldmusic.mp3" type="audio/mpeg">
+</audio>
+
+<div id="container">
+    <header>
+        <div class="logo-nav">
+            <img src="logo_creepy_g.png" alt="g" class="logo" style="padding:0; background:none;">
+            <div class="nav-links">
+                <a href="#" onclick="showHome()">Home</a>
+                <a href="#" onclick="showSteamError()">Buy Garry's Mod</a>
+            </div>
+        </div>
+        <div class="search-box">
+            Search: <input type="text" value="help me">
+        </div>
+    </header>
+
+    <div class="tag-cloud" id="tag-cloud">
+        <span class="tag-large">flesh</span> <span class="tag-medium">screaming</span> <span class="tag-large">zombie</span> 
+        <span class="tag-small">lua</span> <span class="tag-medium">blood</span> <span class="tag-tiny">adv</span> 
+        <span class="tag-large">run</span> <span class="tag-small">combine</span> <span class="tag-medium">dark</span> 
+        <span class="tag-large">hide</span> <span class="tag-tiny">wire</span> <span class="tag-medium">background</span> 
+        <span class="tag-small">pack</span> <span class="tag-large">npc</span> <span class="tag-tiny">rp</span> 
+        <span class="tag-medium">space</span> <span class="tag-small">car</span> <span class="tag-large">dupe</span> 
+        <span class="tag-small">eyes</span> <span class="tag-medium">weapons</span> <span class="tag-tiny">save</span> 
+        <span class="tag-large">build</span> <span class="tag-small">phx</span> <span class="tag-medium">css</span> 
+        <span class="tag-large">ragdoll</span> <span class="tag-tiny">water</span> <span class="tag-medium">sound</span> 
+        <span class="tag-small">boat</span> <span class="tag-large">small</span> <span class="tag-tiny">beta</span> 
+        <span class="tag-medium">props</span> <span class="tag-large">kill</span> <span class="tag-small">ship</span> 
+        <span class="tag-medium">spacebuild</span> <span class="tag-tiny">reskin</span> <span class="tag-large">survival</span> 
+        <span class="tag-small">breen</span> <span class="tag-medium">hexed</span> <span class="tag-tiny">music</span> 
+        <span class="tag-large">gamemode</span> <span class="tag-small">house</span> <span class="tag-medium">plane</span> 
+        <span class="tag-tiny">portal</span> <span class="tag-large">big</span> <span class="tag-small">vehicle</span> 
+        <span class="tag-medium">snow</span> <span class="tag-tiny">gcombat</span> <span class="tag-large">roleplay</span> 
+        <span class="tag-small">mission</span> <span class="tag-medium">advanced</span> <span class="tag-tiny">construct</span> 
+        <span class="tag-large">effect</span> <span style="color:#330000; font-size:10px;">[more...]</span>
+    </div>
+
+    <main id="home-page" class="grid">
+        
+        <div class="mod-card" onclick="showDetail('page-kleiner')">
+            <div class="card-header">
+                <h3>dr_kleiner.zip</h3>
+                <span class="author">By Unknown</span>
+            </div>
+            <div class="meta">6.66 MB, 2026-06-13, 0 downloads</div>
+            <img src="kleiner_thumb_dark.jpg" alt="no image">
+        </div>
+
+        <div class="mod-card" onclick="showDetail('page-lamar')">
+            <div class="card-header">
+                <h3>lamar.zip</h3>
+                <span class="author">By Unknown</span>
+            </div>
+            <div class="meta">1.04 MB, 2026-06-13, 0 downloads</div>
+            <img src="lamar_thumb_dark.jpg" alt="no image">
+        </div>
+
+        <div class="mod-card" onclick="showDetail('page-screaming')">
+            <div class="card-header">
+                <h3>the_screaming.txt</h3>
+                <span class="author">By ???</span>
+            </div>
+            <div class="meta">0.00 KB, 1999-11-19, ERROR</div>
+            <div class="no-image-box">no image</div>
+        </div>
+
+    </main>
+
+    <main id="detail-page">
+        <button class="back-btn" onclick="showHome()">← Back to index</button>
+        
+        <div id="page-kleiner" class="page-content">
+            <h1>dr kleiner</h1>
+            <img src="kleiner_main_creepy.jpg" alt="Dr Kleiner" class="main-image">
+
+            <div class="wiki-section">
+                <h2>Description</h2>
+                <p>dr issac kleiner is a scientist that used to work for <span class="redacted">REDACTED</span> and now is at city ($#*$*&$& with gordon freeman he's very nice to talk to and was very healthy before the events of... the screaming</p>
+            </div>
+            <div class="wiki-section">
+                <h2>State</h2>
+                <p>after the screaming kleiner dosen't have much left of him other than his friend lamar and a distored brain of what once used to be dr issac kleiner</p>
+            </div>
+            <div class="wiki-section">
+                <h2>Appearance</h2>
+                <p>dr kleiner is pure black with glowing white eyes and teeth sharp as hell.</p>
+            </div>
+            <div class="wiki-section">
+                <h2>Related People</h2>
+                <p>gordon freeman, alyx vance, eli vance, barney</p>
+            </div>
+        </div>
+
+        <div id="page-lamar" class="page-content">
+            <h1>lamar</h1>
+            <img src="lamar_main_creepy.jpg" alt="Lamar" class="main-image">
+
+            <div class="wiki-section">
+                <h2>Description</h2>
+                <p>a headcrab who was once normal before the events of the screaming now he isn't like anything we have seen before</p>
+            </div>
+            <div class="wiki-section">
+                <h2>State</h2>
+                <p>destroyed and ruined</p>
+            </div>
+            <div class="wiki-section">
+                <h2>Appearance</h2>
+                <p>i can't describe it at all</p>
+            </div>
+            <div class="wiki-section">
+                <h2>Related People</h2>
+                <p>dr issac kleiner</p>
+            </div>
+        </div>
+
+        <div id="page-screaming" class="page-content">
+            <h1>the screaming</h1>
+            
+            <div class="wiki-section">
+                <h2>Description</h2>
+                <p>the legend said one day the screaming would happen it would distort and corrupt anyone more than ever before for a while nobody trusted the people who spoke about it now... it's here</p>
+            </div>
+            <div class="wiki-section">
+                <h2>State</h2>
+                <p>still happening</p>
+            </div>
+            <div class="wiki-section">
+                <h2>Appearance</h2>
+                <p>dark smoke that's transparent</p>
+            </div>
+            <div class="wiki-section">
+                <h2>Related People</h2>
+                <p>none</p>
+            </div>
+        </div>
+
+    </main>
+
+    <main id="error-page">
+        <h1>failed to redirect to steam page</h1>
+        <h2>[SHUTDOWN]</h2>
+        <button class="back-btn" onclick="showHome()">← Return</button>
+    </main>
+
+</div>
+
+<script>
+    const bgMusic = document.getElementById('creepy-music');
+
+    function showDetail(pageId) {
+        document.getElementById('home-page').style.display = 'none';
+        document.getElementById('tag-cloud').style.display = 'none';
+        document.getElementById('error-page').style.display = 'none';
+        document.getElementById('detail-page').style.display = 'block';
+        
+        // Hide all inner pages first
+        const pages = document.querySelectorAll('.page-content');
+        pages.forEach(page => page.style.display = 'none');
+
+        // Show the specific requested page
+        document.getElementById(pageId).style.display = 'block';
+        
+        // Play music
+        bgMusic.play().catch(e => console.log("Audio couldn't play: " + e));
+    }
+
+    function showHome() {
+        document.getElementById('home-page').style.display = 'grid';
+        document.getElementById('tag-cloud').style.display = 'block';
+        document.getElementById('detail-page').style.display = 'none';
+        document.getElementById('error-page').style.display = 'none';
+        
+        // Stop music
+        bgMusic.pause();
+        bgMusic.currentTime = 0;
+    }
+
+    function showSteamError() {
+        document.getElementById('home-page').style.display = 'none';
+        document.getElementById('tag-cloud').style.display = 'none';
+        document.getElementById('detail-page').style.display = 'none';
+        document.getElementById('error-page').style.display = 'block';
+        
+        // Stop music
+        bgMusic.pause();
+        bgMusic.currentTime = 0;
+    }
+</script>
+
+</body>
+</html>
